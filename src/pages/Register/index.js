@@ -2,6 +2,7 @@ import React, { useCallback, useRef } from 'react';
 import { Link, useHistory } from "react-router-dom";
 import { Form } from '@unform/web';
 import { FiArrowLeft } from "react-icons/fi";
+import { toast } from 'react-toastify';
 
 import api from '../../services/api';
 import Input from '../../components/Input';
@@ -16,11 +17,15 @@ function Register() {
   const { goBack } = useHistory()
 
   const handleSubmit = useCallback(async (data) => {
-    await api.post('/users', data)
+    try {
+      await api.post('/users', data)
 
-    alert('Usuário criado com sucesso.')
+      toast.success('Usuário criado com sucesso.')
 
-    goBack()
+      goBack()
+    }catch(err) {
+      toast.error('Internal Server Error')
+    }
   }, [goBack])
 
   return (
